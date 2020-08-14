@@ -19,7 +19,8 @@
 		.page {
 			margin-left: 5px;
 		}
-		.selected{
+
+		.selected {
 			color: black;
 		}
 	</style>
@@ -45,11 +46,15 @@
 	</p>
 
 	<div>
+		<a v-show="skipPage!=0" href="#" @click="skip(-1)"><<</a>
+
 		<a class="page"
 		   href="#"
-		   :class="currentPage===page?'selected':''"
-		   v-for="page in total"
-		   @click="currentPage=page">{{page}}</a>
+		   :class="currentPage===(skipPage*10)+page?'selected':''"
+		   v-for="page in 10"
+		   @click="selectPage(page)">{{page+(skipPage*10)}}</a>
+
+		<a href="#" @click="skip(1)" v-show="(skipPage+1)*10<total">>></a>
 	</div>
 
 	<table class="table table-striped">
@@ -108,6 +113,7 @@
                 source: [],
 
                 currentPage: 1,
+                skipPage: 0,
             }
         },
         created() {
@@ -116,12 +122,10 @@
                 .then(json => {
                     const stops = Object.keys(json.retVal).map(key => json.retVal[key]);
                     this.source = stops;
-                    console.log(stops.length)
-                    console.log(stops.length % 10)
-                    console.log(parseInt(stops.length / 10))
                     this.total = stops.length % 10 === 0
                         ? parseInt(stops.length / 10)
                         : parseInt(stops.length / 10 + 1);
+                    console.log(this.total)
                 });
         },
         computed: {
@@ -140,6 +144,15 @@
                 return result.slice(skip, skip + 10);
             }
         },
+        methods: {
+            selectPage(page) {
+                this.currentPage = page + (this.skipPage * 10)
+            },
+            skip(count) {
+                this.skipPage += count;
+                this.currentPage += count * 10
+            }
+        }
     }).mount('#app');
 </script>
 
