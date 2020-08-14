@@ -44,12 +44,12 @@
       <th>場站名稱</th>
       <th>場站區域</th>
       <th>目前可用車輛
-        <i class="fa fa-sort-asc" aria-hidden="true" @click="sortType = 'UseAsc'"></i>
-        <i class="fa fa-sort-desc" aria-hidden="true" @click="sortType='UseDesc'"></i>
+        <i v-show="sortType!='UseAsc'" class="fa fa-sort-asc" aria-hidden="true" @click="sortType = 'UseAsc'"></i>
+        <i v-show="sortType!='UseDesc'" class="fa fa-sort-desc" aria-hidden="true" @click="sortType='UseDesc'"></i>
       </th>
       <th>總停車格
-        <i class="fa fa-sort-asc" aria-hidden="true" @click="sortType='TotAsc'"></i>
-        <i class="fa fa-sort-desc" aria-hidden="true" @click="sortType='TotDesc'"></i>
+        <i v-show="sortType!='TotAsc'" class="fa fa-sort-asc" aria-hidden="true" @click="sortType='TotAsc'"></i>
+        <i v-show="sortType!='TotDesc'" class="fa fa-sort-desc" aria-hidden="true" @click="sortType='TotDesc'"></i>
       </th>
       <th>資料更新時間</th>
     </tr>
