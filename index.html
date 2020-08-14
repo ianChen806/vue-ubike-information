@@ -51,7 +51,7 @@
 		<a class="page"
 		   href="#"
 		   :class="currentPage===(skipPage*10)+page?'selected':''"
-		   v-for="page in 10"
+		   v-for="page in 10>total?total:10"
 		   @click="selectPage(page)">{{page+(skipPage*10)}}</a>
 
 		<a href="#" @click="skip(1)" v-show="(skipPage+1)*10<total">>></a>
@@ -131,6 +131,10 @@
         computed: {
             stops() {
                 var result = this.source.filter(r => r.sna.includes(this.searchName));
+                this.total = result.length % 10 === 0
+                    ? parseInt(result.length / 10)
+                    : parseInt(result.length / 10 + 1);
+
                 if (this.sortType === "UseAsc")
                     result.sort((a, b) => a.sbi - b.sbi);
                 if (this.sortType === "UseDesc")
@@ -151,6 +155,12 @@
             skip(count) {
                 this.skipPage += count;
                 this.currentPage += count * 10
+            },
+        },
+        watch: {
+            searchName() {
+                this.currentPage = 1;
+                this.skipPage = 0;
             }
         }
     }).mount('#app');
